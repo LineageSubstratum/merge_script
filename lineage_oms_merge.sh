@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 # Copyright (C) 2017 Nathan Chancellor
+# Updated for LineageSubstratum by Martin Pollard
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,7 +23,7 @@
 #         #
 ###########
 
-# PURPOSE: Merge Substratum support from LineageOMS org into LineageOS repos
+# PURPOSE: Merge Substratum support from LineageSubstratum org into LineageOS repos
 #
 # USAGE: $ bash lineage_oms_merge.sh -h
 
@@ -90,7 +91,7 @@ function format_time() {
 
 # PRINTS A HELP MENU
 function help_menu() {
-    echo -e "\n${BOLD}OVERVIEW:${RESTORE} Merges full Substratum support from LineageOMS organization into a LineageOS set of repos\n"
+    echo -e "\n${BOLD}OVERVIEW:${RESTORE} Merges full Substratum support from LineageSubstratum organization into a LineageOS set of repos\n"
     echo -e "${BOLD}USAGE:${RESTORE} bash lineage_oms_merge.sh <source_dir>\n"
     echo -e "${BOLD}EXAMPLE:${RESTORE} bash lineage_oms_merge.sh ~/Android/Lineage\n"
     echo -e "${BOLD}Required options:${RESTORE}"
@@ -191,15 +192,15 @@ for FOLDER in ${SUBS_REPOS}; do
     BRANCH=cm-14.1
 
     # FETCH THE REPO
-    git fetch https://github.com/LineageOMS/${URL} ${BRANCH}
+    git fetch https://github.com/LineageSubstratum/${URL} ${BRANCH}
 
     # GIT GYMNASTICS (GETS MESSY, BEWARE)
     # FIRST HASH WILL ALWAYS BE THE FETCH HEAD
     FIRST_HASH=$(git log --format=%H -1 FETCH_HEAD)
 
     # SECOND HASH WILL BE THE LAST THING I COMMITTED
-    NUMBER_OF_COMMITS=$(( $( git log --format=%H --committer="Nathan Chancellor" FETCH_HEAD | wc -l ) - 1 ))
-    SECOND_HASH=$( git log --format=%H --committer="Nathan Chancellor" FETCH_HEAD~${NUMBER_OF_COMMITS}^..FETCH_HEAD~${NUMBER_OF_COMMITS} )
+    NUMBER_OF_COMMITS=$(( $( git log --format=%H --committer="Martin Pollard" FETCH_HEAD | wc -l ) - 1 ))
+    SECOND_HASH=$( git log --format=%H --committer="Martin Pollard" FETCH_HEAD~${NUMBER_OF_COMMITS}^..FETCH_HEAD~${NUMBER_OF_COMMITS} )
 
     # NOW THAT WE HAVE THE HASHES, WE WANT TO TRY AND SEE IF OMS ALREADY EXISTS
     # THIS SCRIPT NEEDS TO BE RUN ON A CLEAN REPO
@@ -231,7 +232,7 @@ newLine; echoText "Syncing packages/services/ThemeInterfacer"
 if [[ ! -f .repo/local_manifests/substratum.xml ]]; then
     mkdir -p .repo/local_manifests
     curl --silent --output .repo/local_manifests/substratum.xml \
-    https://raw.githubusercontent.com/LineageOMS/merge_script/master/substratum.xml
+    https://raw.githubusercontent.com/LineageSubstratum/merge_script/master/substratum.xml
 fi
 
 repo sync --force-sync packages/services/ThemeInterfacer
